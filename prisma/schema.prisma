@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -32,4 +33,5 @@ model Companion {
   categoryId String
 
   @@index([categoryId])
+  @@fulltext([name])
 }
