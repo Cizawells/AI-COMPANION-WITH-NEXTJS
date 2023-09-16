@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Category, Companion } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { Separator } from "./ui/separator";
 
 interface CompanionFormProps {
     initialData: Companion | null;
@@ -46,10 +48,40 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
     })
 
     const isLoading = form.formState.isSubmitting
-
-    
+ 
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        console.log(values)
+    }
   return (
-    <div>CompanionForm</div>
+   <div className="h-full p4 space-y-2 max-w-3xl mx-auto">
+        <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pb-10">
+                        <div className="space-y-2 w-full ">
+                            <div>
+                                <h3 className="text-lg font-medium">
+                                        General Information
+                                </h3>
+                                <div className="text-sm text-muted-foreground">
+                                    General Information about your Companion
+                                </div>
+                            </div>
+
+                            <Separator className="bg-primary/10"/>
+                        </div>
+
+                        <FormField 
+                        name="src"
+                        render={({field}) => (
+                            <FormItem className="flex flex-col items-center justify-center space-y-4 ">
+                                    <FormControl>
+                                        Image Upload Component
+                                    </FormControl>
+                                    <FormMessage />
+                            </FormItem>
+                        )}/>
+                </form>
+        </Form>
+   </div>
   )
 }
 

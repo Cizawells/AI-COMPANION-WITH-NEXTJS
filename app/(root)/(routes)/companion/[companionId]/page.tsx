@@ -15,7 +15,7 @@ const CompanionIdPage = async ({ params }: CompanionIdPageProps) => {
         where: {
             id: params.companionId
         }
-    })
+    }) 
 
     const categories = await prismadb.category.findMany()
   return (
