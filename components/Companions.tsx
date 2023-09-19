@@ -1,5 +1,4 @@
 import { Companion } from '@prisma/client'
-import React from 'react'
 
 interface CompanionProps {
     data: (Companion & {
@@ -9,7 +8,7 @@ _count:  {
     })[]
 }
 
-const Companions = ({data}: ) => {
+const Companions = ({data}: CompanionProps) => {
   return (
     <div>Companions</div>
   )
