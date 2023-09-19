@@ -23,7 +23,7 @@ export async function PATCH(req: Request, {params} : { params: { companionId: st
             where: {
                 id: params.companionId
             },
-            data: {
+            data:  {
                 categoryId,
                 userId: user.id,
                 userName: user.firstName,
