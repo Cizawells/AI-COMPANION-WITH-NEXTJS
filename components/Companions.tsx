@@ -1,7 +1,8 @@
 import { Companion } from '@prisma/client'
+import { MessagesSquare } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Card, CardHeader } from './ui/card'
+import { Card, CardFooter, CardHeader } from './ui/card'
 
 interface CompanionProps {
     data: (Companion & {
@@ -28,8 +29,18 @@ className='bg-primary/10 rounded-xl cursor-pointer hover:opacity-75 transition b
                   alt="Companion"
                 />
               </div>
+              <p className="font-bold">{ item.name}</p>
+              <p className="text-xs ">{ item.description}</p>
             </CardHeader>
-          
+            <CardFooter className='flex items-center justify-between text-xs text-muted-foreground'>
+              <p className='lowercase'>
+                @{item.userName}
+              </p>
+              <div className="flex items-center">
+                <MessagesSquare className='w-3 h-3 mr-1' />
+                {item._count.messages}
+              </div>
+            </CardFooter>
           </Link>
       </Card>
       ))}
