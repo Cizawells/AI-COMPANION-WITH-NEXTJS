@@ -45,7 +45,7 @@ const ImageUpload = ({value, onChange, disabled} : ImageUploadProps) => {
     
 
   return (
-    <div className=" flex justify-start w-full lg:min-h-400 min-h-200 relative">
+    <div className=" flex justify-start w-full h-200 relative">
         {/* <CldUploadButton
         onUpload={(result: any) => onChange(result.info.secure_url)}
         options={{
@@ -65,7 +65,7 @@ const ImageUpload = ({value, onChange, disabled} : ImageUploadProps) => {
         </CldUploadButton> */}
 
           <div className="flex justify-start ">
-        <label htmlFor="poster" className="flexCenter ">
+        <label htmlFor="poster" className=" text-center w-full h-full p-20  border-gray-50 border-dashed ">
           {!value && 'Choose a poster for your project'}
         </label>
         <input
@@ -73,7 +73,7 @@ const ImageUpload = ({value, onChange, disabled} : ImageUploadProps) => {
           type="file"
           accept="image/*"
           required={value !== null}
-          className="form_image-input"
+          className="absolute z-30 w-full opacity-0 h-full cursor-pointer"
           onChange={handleChangeImage}
         />
 
