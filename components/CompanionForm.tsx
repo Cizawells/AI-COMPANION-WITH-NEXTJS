@@ -57,6 +57,15 @@ const formSchema = z.object({
     }),
 })
 
+const uploadImage = async (imagePath: string) => {
+      try {
+        const response = await fetch(`http://localhost/api/upload`, { method: 'POST', body: JSON.stringify({ path: imagePath }) })
+        return response.json()
+    } catch (error) {
+        throw error
+    }
+}
+
 const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
     const router = useRouter()
     const {toast} = useToast()
@@ -79,9 +88,11 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
             if(initialData) {
                 //Update Companion functionality
                 await axios.patch(`/api/companion/${initialData.id}`, values)
-            }else {
+            } else {
+                await axios.post("/localhost/api/upload", { method: 'POST', body: JSON.stringify({ path: values.src }) })
+                 const imageUrl = await uploadImage(values.src);
                 //Create companion functionality
-                        await axios.post("/api/companion", values)
+                        await axios.post("/api/companion", {values, src: imageUrl.url})
             }
 
             toast({
