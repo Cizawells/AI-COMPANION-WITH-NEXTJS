@@ -1,6 +1,7 @@
-import ChatClient from "@/components/ChatClient"
 import { auth, redirectToSignIn } from "@clerk/nextjs"
+import { Prisma } from "@prisma/client"
 import { redirect } from "next/navigation"
+import ChatClient from "./components/client"
 
 interface ChatIdPageProps {
     params: {
@@ -17,7 +18,7 @@ const page = async ({ params }: ChatIdPageProps) => {
         return redirectToSignIn()
     }
 
-    const companion = await prisma?.companion.findUnique({
+    const companion = await Prisma?.companion.findUnique({
         where: {
             id: params.chatId
         },
@@ -42,7 +43,7 @@ const page = async ({ params }: ChatIdPageProps) => {
         return redirect("/")
     }
   return (
-      <ChatClient companion={ companion} />
+      <ChatClient companion={companion} />
   )
 }
 
