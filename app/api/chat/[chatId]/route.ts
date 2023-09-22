@@ -1,9 +1,11 @@
-import { currentUser } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
-
 import { MemoryManager } from "@/lib/memory";
 import prismadb from "@/lib/prismadb";
 import { rateLimit } from "@/lib/rate-limit";
+import { currentUser } from "@clerk/nextjs";
+import { LangChainStream } from "ai";
+import { CallbackManager } from "langchain/callbacks";
+import { Replicate } from "langchain/llms/replicate";
+import { NextResponse } from "next/server";
 
 
 export async function POST(
@@ -62,6 +64,31 @@ export async function POST(
             await memoryManager.seedChatHistory(companion.seed, "\n\n", companionKey)
         }
 
+        await memoryManager.writeToHistory("User: " + prompt + "\n", companionKey)
+
+        const recentChatHistory = await memoryManager.readLatestHistory(companionKey);
+        const similarDocs = await memoryManager.vectorSearch(
+            recentChatHistory,
+            companion_file_name
+        );
+
+        let relevantHistory = "";
+
+        if(!!similarDocs && similarDocs.length !== 0)
+        {
+            relevantHistory = similarDocs.map(doc => doc.pageContent).join("\n")
+        }
+        
+        const { handlers } = LangChainStream();
+    const model = new Replicate({
+      model:
+        "a16z-infra/llama-2-13b-chat:df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5",
+      input: {
+        max_length: 2048,
+      },
+      apiKey: process.env.REPLICATE_API_TOKEN,
+      callbackManager: CallbackManager.fromHandlers(handlers),
+    });
     } catch (error) {
         console.log("[CHAT_POST]", error);
         return new NextResponse("Internal Error", { status: 5000})
